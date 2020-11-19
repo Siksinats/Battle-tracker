@@ -1,38 +1,722 @@
-.App {
-  text-align: center;
+
+@import url('https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Piazzolla&display=swap');
+
+@keyframes current {
+
+    from {  transform:scale(1.1) translate(0px, -5px);
+            box-shadow:7px 7px 20px 1px rgb(0, 0, 0) }
+    50%  {  transform:scale(1.075) translate(0px, 0px);
+            box-shadow:2px 2px 10px 1px rgb(0, 0, 0) }
+    to   {  transform:scale(1.1) translate(0px, -5px);
+            box-shadow:7px 7px 20px 1px rgb(0, 0, 0) }    
+    }
+
+@keyframes next {
+
+    from {  transform:scale(1.05) translate(0px, -5px);
+            box-shadow:5px 5px 15px 1px rgb(0, 0, 0) }
+    50%  {  transform:scale(1.025) translate(0px, 0px);
+            box-shadow:1px 1px 10px 1px rgb(0, 0, 0) }
+    to   {  transform:scale(1.05) translate(0px, -5px);
+            box-shadow:5px 5px 15px 1px rgb(0, 0, 0) }     
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@keyframes currentBorder {
+    0% {
+    transform:scaleX(0);
+    transform-origin: left;
+    }
+    50%
+    {
+      transform:scaleX(1);
+    transform-origin: left;
+    }
+    50.1%
+    {
+      transform:scaleX(1);
+    transform-origin: right;
+      
+    }
+    
+    100%
+    {
+      transform:scaleX(0);
+    transform-origin: right;
+      
+    }
+    
+    
   }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+  @keyframes damage {
+    from {transform:translate(0px, 0px)}
+    14.3%{transform:translate(5px, 0px)}
+    28.6%{transform:translate(-7px, 0px)}
+    42.9%{transform:translate(9px, 0px)}
+    57.2%{transform:translate(-7px, 0px)}
+    71.5%{transform:translate(5px, 0px)}
+    85.8%{transform:translate(-5px, 0px)}
+    to   {transform:translate(0px, 0px)}
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
   }
-  to {
-    transform: rotate(360deg);
+
+* {
+    font-family: 'Piazzolla', serif;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('./Images/\'4d8f7675.png\'');
+}
+.header {
+    width: 100%;
+}
+.header h1 {
+    margin: 10px;
+     text-align: center;
+}
+
+.header-details {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.15rem;
+}
+
+.header-details select, .header-details span {
+    margin: 0px 20px;
+}
+
+.nextBtn, .startBtn {
+    z-index: 10;
+    position: fixed;
+    top: 10vh;
+    left: 0px;
+    height:175px;
+    background-image: url('./Images/\'a4cd26e8.png\'');
+    color: whitesmoke;
+    box-shadow: -14px -5px 34px 6px rgba(0,0,0,0.75);
+    border-radius: 0px 20px 20px 0px;
+    border-style: ridge;
+    border-width: 3px;
+    border-left: none;
+    border-color: whitesmoke;
+    outline: none;
+}
+
+.add-player {
+    z-index: 10;
+    position: fixed;
+    top: calc(50vh - 87.5px);
+    left: 0px;
+    height:175px;
+    background-image: url('./Images/\'a4cd26e8.png\'');
+    color: whitesmoke;
+    box-shadow: -14px -5px 34px 6px rgba(0,0,0,0.75);
+    border-radius: 0px 20px 20px 0px;
+    border-style: ridge;
+    border-width: 3px;
+    border-left: none;
+    border-color: whitesmoke;
+    outline: none;
+}
+
+.add-enemy {
+    width: 50px;
+    z-index: 10;
+    position: fixed;
+    bottom: 10vh;
+    left: 0px;
+    height:175px;
+    background-image: url('./Images/\'a4cd26e8.png\'');
+    color: whitesmoke;
+    box-shadow: -14px -5px 34px 6px rgba(0,0,0,0.75);
+    border-radius: 0px 20px 20px 0px;
+    border-style: ridge;
+    border-width: 3px;
+    border-left: none;
+    border-color: whitesmoke;
+    outline: none;
+}
+
+.nextBtn p, .startBtn p, .add-player p, .add-enemy p {
+    margin: 0px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 1.5rem;
+    font-weight: bolder;
+    letter-spacing: 2px;
+}
+
+.nextBtn:hover, .startBtn:hover, .add-player:hover, .add-enemy:hover {
+    cursor: pointer;
+    z-index: 11;
+}
+
+.nextBtn:active, .startBtn:active, .add-player:active, .add-enemy:active {
+    transform: scale(.99);
+
+}
+
+.combatant {
+    width: 85vw;
+    color: whitesmoke;
+    display: flex;
+    border-width: 3px;
+    border-style: ridge;
+    border-radius: 2px;
+    border-color: whitesmoke;
+    margin: 20px auto;
+    height: 200px;
+    transition: all ease-in-out 1s;
+    transform: scale(1);
+}
+
+.player {
+    background: rgb(80,80,177);
+    background: radial-gradient(circle, rgba(80,80,177,1) 0%, rgba(56,56,135,1) 50%, rgba(36,35,131,1) 100%);
+}
+
+.enemy {
+    background: rgb(177,80,80);
+    background: radial-gradient(circle, rgba(177,80,80,1) 0%, rgba(135,56,56,1) 50%, rgba(131,35,36,1) 100%);   
+}
+
+.shadow-wrapper {
+    pointer-events: none;
+    z-index: 2;
+    width:100%;
+    height:100%;
+    position: absolute;
+    box-shadow: inset 1px 1px 10px 1px rgb(0, 0, 0);
+}
+
+.remove {
+    height: 100%;
+    background: rgba(245, 245, 245, 0.5);
+    border: none;
+    border-radius: 0px 3px 3px 0px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-color: black;
+}
+
+.remove:hover {
+    cursor: pointer;
+}
+.combatant h2 {
+    font-family: 'Lobster Two', cursive;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.initWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto 5px;
+    background-image: url('./Images/initCircle.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100px;
+    width: 100px;
+}
+
+.acWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto 5px;
+    background-image: url('./Images/acBorder.png');
+    background-size: contain;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    height: 100px;
+    width: 75px;
+}
+
+.initiative, .ac {
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+}
+
+.ac-reveal:hover {
+    cursor: pointer;
+}
+.combatantName {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between ;
+    align-self: flex-end;
+    flex-grow: 2;
+    margin-left: 20px;
+    margin-right: 5px;
+}
+
+.combatantName h2 {
+    margin: 10px;
+}
+
+.health-bar {
+    position: relative;
+    border-style: ridge;
+    border-width: 2px;
+    border-radius: 15px;
+    width: 99%;
+    height: 20px;
+    
+}
+
+.percent-blocks {
+    background: rgb(219,219,219);
+    background: linear-gradient(180deg, rgba(219,219,219,0.5) 0%, rgba(254,254,254,0.5) 35%, rgba(173,173,173,0.5) 100%);
+    border-radius: 15px;
+    position: absolute;
+    top: 0px;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.health-percent {
+    transition: all ease 1s;
+    border-radius: 15px;
+    height: 100%;
+    background: linear-gradient(180deg, 
+        rgba(51,241,0,1) 0%, 
+        rgba(161,255,151,1) 35%, 
+        rgba(16,164,4,1) 100%);
+}
+
+.healthBlock {
+    width: 10%;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-color: black;
+    z-index: 1;
+}
+
+.healthBlock:last-of-type {
+    border: none;
+}
+
+.health {
+    text-align: center;
+    margin: 5px 0px;
+    font-size: 1.5rem;
+}
+
+.statusEffects {
+    z-index: 3;
+    position: relative;
+    height: 70px;
+    display: flex;
+}
+
+.statusMenu {
+    position: relative;
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    
+}
+
+.statusMenu button {
+    position: relative;
+    background: rgba(255, 255, 255, 0.5);
+    border: none
+}
+
+.statusMenu button:hover {
+    cursor: pointer;
+}
+
+.statusMenu select {
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    margin-right: 1px;
+}
+
+.statusMenu select:hover {
+    cursor: pointer;
+}
+
+.afflictedStatus {
+    display: flex;
+}
+.afflictedStatus img {
+    height: 60px;
+    border-radius: 5px;
+    margin-right: 5px;
+    border-style: outset;
+    border-width: 2px;
+    border-color: grey
+}
+.afflictedStatus figure {
+    position: relative;
+    margin: 0px;
+}
+
+.afflictedStatus figure:focus {
+    outline: none;
+}
+.afflictedStatus img:hover {
+    cursor: pointer;
+}
+
+.afflictedStatus img:active {
+    border-style: inset;
+}
+
+.statusDropdown {
+    top:0px;
+    right:-100px;
+    z-index: 100;
+    width: 100px;
+    visibility: hidden;
+    position: absolute;
+    background: grey;
+    border-radius: 2px;
+}
+
+.statusDropdown ul {
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    list-style: none;
+}
+
+.statusDropdown li {
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+}
+
+.statusDropdown button {
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    border: none;
+    
+}
+
+.statusDropdown button:hover {
+    cursor: pointer;
+}
+
+figure:active .statusDropdown,
+figure:focus .statusDropdown {
+    visibility: visible;
+}
+
+.damageComp {
+    margin-left: 5px;
+    margin-right: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.numberChange {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 50%;
+    font-size: 2rem;
+}
+
+.numberChange p {
+    flex-grow: 2;
+    text-align: center;
+}
+
+.incrementBtns, .decrementBtns {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.incrementBtns button, .decrementBtns button {
+    height: 50%;
+    width: 40px
+}
+
+.damage {
+    margin-top: 1px;
+    border-radius: 0px 0px 3px 3px;
+}
+
+.heal {
+    border-radius: 3px 3px 0px 0px;
+}
+
+.heal,
+.damage,
+.decrementDamage, 
+.decrementDamage10,
+.incrementDamage,
+.incrementDamage10 {
+    height:2.5rem;
+    width: 100%;
+    background: rgba(245, 245, 245, 0.5);
+    border: none;
+}
+
+.decrementDamage, 
+.decrementDamage10,
+.incrementDamage,
+.incrementDamage10 {
+    margin-top: 1px;
+}
+
+.heal:hover, 
+.damage:hover, 
+.decrementDamage:hover, 
+.decrementDamage10:hover,
+.incrementDamage:hover,
+.incrementDamage10:hover {
+    cursor: pointer;
+}
+
+.heal:active, .damage:active {
+    outline: none;
+}
+
+.status-wrapper {
+    transition: height 1s cubic-bezier(.55,-0.55,.55,1.55) ;
+    height: 0px;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0px;
+    left: 5vw;
+    width: 90vw;
+    background-image: url('./Images/\'a4cd26e8.png\'');
+    color: whitesmoke;
+    box-shadow: -14px -5px 34px 6px rgba(0,0,0,0.75);
+    border-radius: 20px 20px 0px 0px;
+    border-style: ridge;
+    border-width: 3px;
+    border-bottom: none;
+}
+
+.status-wrapper h2 {
+    margin-left: 20px;
+    text-decoration: underline;
+    font-size: 1.75rem;
+}
+
+.status-wrapper ul {
+    list-style-type: upper-roman;
+}
+
+.status-wrapper li {
+    margin: 5px 0px;
+    font-size: 1.15rem;
+}
+
+.height{
+    height: 200px;
+    outline: none;
+} 
+
+.exitBtn {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+/*--Animations --*/
+.animations {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+}
+.damageEffect {
+    pointer-events: none;
+    z-index: 2;
+    width:100%;
+    height:100%;
+    position: absolute;
+    opacity: 0;
+    background: radial-gradient(circle, rgba(245,186,186,0) 11%, rgba(255,212,212,0.10478359908883828) 35%, rgba(147,13,13,1) 82%, rgba(108,0,2,1) 95%);
+}
+
+.damageTaken {
+    animation: damage .5s ease;
+}
+
+.death {
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    z-index: 100;
+    overflow: visible; 
+    position: absolute;
+    background-image: radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(0,0,0,0.6194852941176471) 35%, rgba(0,0,0,1) 88%, rgba(92,0,0,1) 100%);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 100%;
+    height: 100%
+}
+
+.death img {
+    z-index: 100;
+    position: absolute;
+    top:-150%;
+    height: 400%;
+    width: auto
+}
+
+.healEffect {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.healBackground {
+    position: absolute;
+    opacity: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(202,255,196,0.48) 48%, rgba(16,124,0,1) 100%); 
+}
+
+.mainHeal, .smallHeal, .transparentHeal {
+    opacity: 0;
+    z-index: 2;
+    height: 100px;
+    width: auto;
+    position: absolute;
+}
+
+.h1 {
+    left: 90%;
+    top: 20%
+}
+
+.h2 {
+    left: 25%
+}
+
+.h3 {
+    left: 55%;
+    top: 50%
+}
+
+.h4 {
+    left: 10%;
+    top:35%
+}
+
+.h5 {
+    left: 70%;
+    top: 60%
+}
+
+.h6 {
+    left: 40%;
+    top: 20%
+}
+
+.h7 {
+    left: 60%;
+    top: 10%
+}
+
+.h8 {
+    left: 30%;
+    top: 60%
+}
+
+.h9 {
+    left: 80%;
+    top: 10%
+}
+
+.h10 {
+    left: 5%;
+    top: 5%
+}
+
+.box {
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+    width:100%;
+    height:100%;
+    position: absolute;
+}
+
+
+
+.box span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
   }
+  
+  .box span:nth-child(1)
+  {
+    transform:rotate(0deg);
+  }
+  
+  .box span:nth-child(2)
+  {
+    transform:rotate(180deg);
+  }
+  
+  .box span:before
+  {
+    display: none;
+    content: '';
+    position: absolute;
+    width:100%;
+    height: 2px;
+    background:rgba(80,223,219,1);
+    animation: currentBorder 15s linear infinite;
+  }
+
+
+
+
+.currentTurn {
+    transform: scale(1.1);
+    box-shadow:7px 7px 20px 1px rgb(0, 0, 0);
+    animation: current 10s infinite;
+    /*animation-delay: 1s; -----re add to work on making transition smoother*/
+}
+
+.currentTurn .box span:before {
+    display: initial;
+}
+
+.nextTurn {
+    transform: scale(1.05);
+    box-shadow:5px 5px 15px 1px rgb(0, 0, 0);
+    animation: next 10s infinite;
+     /*animation-delay: 1s; -----re add to work on making transition smoother*/
 }
